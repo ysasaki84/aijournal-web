@@ -1,0 +1,65 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const episodes = await getCollection('episodes');
+  return episodes
+    .filter((episode) => !episode.data.draft || import.meta.env.DEV)
+    .map((episode) => ({
+      params: { slug: episode.id },
+      props: { episode },
+    }));
+}
+
+const { episode } = Astro.props;
+const { Content } = await render(episode);
+const { title, youtubeId, publishedAt, guest, category, summary, points } = episode.data;
+const watchUrl = `https://www.youtube.com/watch?v=${youtubeId}`;
+---
+
+<Base title={`${title}｜日本AIジャーナル ウェブ版`}>
+  <article>
+    <div class="container-narrow episode-header">
+      <div class="episode-meta">
+        <span class="pill">{category}</span>
+        <span>{publishedAt.toISOString().slice(0, 10)}</span>
+        {guest && <span>{guest}</span>}
+      </div>
+      <h1 class="episode-title">{title}</h1>
+    </div>
+
+    <div class="container-narrow">
+      <div class="video-embed">
+        <iframe
+          src={`https://www.youtube.com/embed/${youtubeId}`}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="video-cta">
+        <a href={watchUrl} class="btn-primary">YouTubeで本編を見る</a>
+        <span class="hint">画面・出力例・トークン消費の推移は本編で</span>
+      </div>
+
+      <div class="summary"><strong>この記事の要点</strong><br />{summary}</div>
+
+      {points.length > 0 && (
+        <ul class="points">
+          {points.map((point) => <li>{point}</li>)}
+        </ul>
+      )}
+
+      <div class="article-body">
+        <Content />
+      </div>
+
+      <div class="article-footer">
+        <a href="/" class="back-link">← 記事一覧へ戻る</a>
+        <a href={watchUrl} class="btn-ghost">動画本編を見る</a>
+      </div>
+    </div>
+  </article>
+</Base>

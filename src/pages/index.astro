@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const episodes = await getCollection('episodes', ({ data }) => !data.draft || import.meta.env.DEV);
+episodes.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+
+<Base>
+  <section class="hero">
+    <div class="container">
+      <h1>AIの対話を、<br />文章で読む。</h1>
+      <p class="lede">
+        YouTube番組「日本AIジャーナル」の取材・検証の内容を、ナレッジベースとして文章化。視聴前の判断材料に、視聴後の参照資料に。
+      </p>
+      <a href="https://www.youtube.com/@nipponaijournal" class="btn-ghost">YouTube本編を見る</a>
+    </div>
+  </section>
+
+  <section style="padding-bottom: 80px;">
+    <div class="container">
+      <h2 class="section-title">Latest Episodes</h2>
+      <ul class="episode-grid">
+        {episodes.map((episode) => (
+          <li>
+            <a href={`/episodes/${episode.id}/`} class="episode-card">
+              <img
+                src={`https://i.ytimg.com/vi/${episode.data.youtubeId}/hqdefault.jpg`}
+                alt=""
+                loading="lazy"
+              />
+              <p class="title">{episode.data.title}</p>
+              <p class="meta">
+                {episode.data.publishedAt.toISOString().slice(0, 10)}｜{episode.data.category}
+              </p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
