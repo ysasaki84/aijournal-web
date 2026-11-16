@@ -4,39 +4,136 @@ import Base from '../layouts/Base.astro';
 
 const episodes = await getCollection('episodes', ({ data }) => !data.draft || import.meta.env.DEV);
 episodes.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+
+const featured = episodes[0];
+const rest = episodes.slice(1);
+const categories = [...new Set(episodes.map((e) => e.data.category).filter(Boolean))];
+const channelUrl = 'https://www.youtube.com/@nipponaijournal';
 ---
 
 <Base>
+  {/* ---------- ヒーロー ---------- */}
   <section class="hero">
     <div class="container">
-      <h1>AIの対話を、<br />文章で読む。</h1>
+      <span class="pill hero-eyebrow">YouTubeの実戦対話を、文章のナレッジベースに</span>
+      <h1>AIの実戦を、<br />読める資産に。</h1>
       <p class="lede">
-        YouTube番組「日本AIジャーナル」の取材・検証の内容を、ナレッジベースとして文章化。視聴前の判断材料に、視聴後の参照資料に。
+        「日本AIジャーナル」の検証・対話の内容を記事化。視聴前の判断材料に、視聴後の参照資料に、検索からの再訪に。すぐに使える知見がここに蓄積されます。
       </p>
-      <a href="https://www.youtube.com/@nipponaijournal" class="btn-ghost">YouTube本編を見る</a>
+      <div class="hero-actions">
+        <a href={`${channelUrl}?sub_confirmation=1`} class="btn-primary">YouTubeチャンネル登録</a>
+        <a href="#latest" class="btn-ghost">記事を読み始める</a>
+      </div>
     </div>
   </section>
 
-  <section style="padding-bottom: 80px;">
-    <div class="container">
-      <h2 class="section-title">Latest Episodes</h2>
-      <ul class="episode-grid">
-        {episodes.map((episode) => (
-          <li>
-            <a href={`/episodes/${episode.id}/`} class="episode-card">
-              <img
-                src={`https://i.ytimg.com/vi/${episode.data.youtubeId}/hqdefault.jpg`}
-                alt=""
-                loading="lazy"
-              />
-              <p class="title">{episode.data.title}</p>
-              <p class="meta">
-                {episode.data.publishedAt.toISOString().slice(0, 10)}｜{episode.data.category}
-              </p>
-            </a>
-          </li>
-        ))}
-      </ul>
+  {/* ---------- 今週のピックアップ(Class Hero Block) ---------- */}
+  {featured && (
+    <section class="container" style="padding-bottom: 80px;">
+      <a
+        href={`/episodes/${featured.id}/`}
+        class="featured"
+        style={`background-image:url(https://i.ytimg.com/vi/${featured.data.youtubeId}/hqdefault.jpg)`}
+      >
+        <div class="featured-overlay">
+          <span class="featured-label">注目の記事</span>
+          <h2 class="featured-title">{featured.data.title}</h2>
+          <p class="featured-meta">{featured.data.summary}</p>
+          <span class="btn-ghost">記事を読む</span>
+        </div>
+      </a>
+    </section>
+  )}
+
+  {/* ---------- このメディアの使い方(Membership Feature Row) ---------- */}
+  <section class="container features">
+    <div class="feature-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2V5z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+      <div>
+        <p class="feature-title">視聴前に全体像をつかむ</p>
+        <p class="feature-body">要点と結論を先に読める。長尺動画でも3分で内容を判断でき、見る価値を確かめてから本編に進めます。</p>
+      </div>
+    </div>
+    <div class="feature-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+      <div>
+        <p class="feature-title">視聴後に参照資料として戻る</p>
+        <p class="feature-body">モデル比較表、コスト検証データ、手順などをテキストで記録。「どこで言っていたか」を検索して引き出せます。</p>
+      </div>
+    </div>
+    <div class="feature-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+      <div>
+        <p class="feature-title">公開は続く。知見は積み上がる</p>
+        <p class="feature-body">回を重ねるごとにテーマ別の知識ベースが育ちます。1つの記事から、関連する対話へたどれます。</p>
+      </div>
     </div>
   </section>
+
+  {/* ---------- 記事一覧(カテゴリフィルター付き) ---------- */}
+  <section id="latest" class="container" style="padding-bottom: 80px;">
+    <h2 class="section-title">All Episodes</h2>
+    <div class="pill-row">
+      <a href="#" class="filter-pill active" data-filter="all">すべて</a>
+      {categories.map((c) => (
+        <a href="#" class="filter-pill" data-filter={c}>{c}</a>
+      ))}
+    </div>
+    <ul class="episode-grid">
+      {episodes.map((episode) => (
+        <li data-category={episode.data.category}>
+          <a href={`/episodes/${episode.id}/`} class="episode-card">
+            <img
+              src={`https://i.ytimg.com/vi/${episode.data.youtubeId}/hqdefault.jpg`}
+              alt=""
+              loading="lazy"
+            />
+            <p class="title">{episode.data.title}</p>
+            <p class="meta">
+              {episode.data.publishedAt.toISOString().slice(0, 10)}｜{episode.data.category}
+            </p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {/* ---------- 登録導線パネル ---------- */}
+  <section class="container">
+    <div class="cta-panel">
+      <h2 class="cta-title">毎回、実戦のAIを配信中</h2>
+      <p class="cta-body">
+        新しい検証・対話はYouTube本編で公開。通知をオンにすると、記事化のタイミングも取りこぼしません。
+      </p>
+      <a href={`${channelUrl}?sub_confirmation=1`} class="btn-primary">チャンネル登録して通知を受け取る</a>
+    </div>
+  </section>
+
+  {/* ---------- 固定コンバージョンバー ---------- */}
+  <div class="promo-bar">
+    <div class="container promo-inner">
+      <img src="/logo-mark.png" alt="" class="promo-avatar" />
+      <div class="promo-text">
+        <p class="promo-title">日本AIジャーナル — 毎週、AIの実戦を配信</p>
+        <p class="promo-sub">記事は本編公開後に追加されます</p>
+      </div>
+      <a href={`${channelUrl}?sub_confirmation=1`} class="btn-primary">チャンネル登録</a>
+    </div>
+  </div>
 </Base>
+
+<script>
+  const pills = document.querySelectorAll<HTMLAnchorElement>('.filter-pill');
+  const cards = document.querySelectorAll<HTMLElement>('[data-category]');
+  pills.forEach((pill) => {
+    pill.addEventListener('click', (e) => {
+      e.preventDefault();
+      pills.forEach((p) => p.classList.remove('active'));
+      pill.classList.add('active');
+      const v = pill.dataset.filter;
+      cards.forEach((card) => {
+        card.style.display = v === 'all' || card.dataset.category === v ? '' : 'none';
+      });
+    });
+  });
+</script>
