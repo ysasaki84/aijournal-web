@@ -1,0 +1,48 @@
+name: Deploy preview to GitHub Pages
+
+# redesign ブランチのプレビューを GitHub Pages に公開する（main は変更しない）。
+# ソースは絶対パス（/...）前提のため、ビルド後に /aijournal-web/ プレフィックスを付与して
+# サブパス配信に対応させる（ソースコードは変更しない）。
+on:
+  push:
+    branches: [redesign]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Rewrite absolute paths for /aijournal-web/ subpath
+        run: |
+          find dist -type f \( -name '*.html' -o -name '*.css' \) -print0 \
+            | xargs -0 perl -0pi -e 's{(["\(])/(?!/)}{$1/aijournal-web/}g'
+          touch dist/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
