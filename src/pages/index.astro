@@ -6,30 +6,74 @@ const episodes = await getCollection('episodes', ({ data }) => !data.draft || im
 episodes.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 
 const featured = episodes[0];
-const rest = episodes.slice(1);
 const categories = [...new Set(episodes.map((e) => e.data.category).filter(Boolean))];
 const channelUrl = 'https://www.youtube.com/@nipponaijournal';
 ---
 
 <Base>
   {/* ---------- ヒーロー ---------- */}
-  <section class="hero">
+  <section class="hero hero-glow">
     <div class="container">
       <span class="pill hero-eyebrow">YouTubeの実戦対話を、文章のナレッジベースに</span>
       <h1>AIの実戦を、<br />読める資産に。</h1>
       <p class="lede">
-        「日本AIジャーナル」の検証・対話の内容を記事化。視聴前の判断材料に、視聴後の参照資料に、検索からの再訪に。すぐに使える知見がここに蓄積されます。
+        日本経済新聞社の取材力と信頼を背景に、MC北爪が当事者に深く聞く「日本AIジャーナル」。その検証と対話を、意思決定に耐える文章として公開しています。
       </p>
       <div class="hero-actions">
         <a href={`${channelUrl}?sub_confirmation=1`} class="btn-primary">YouTubeチャンネル登録</a>
         <a href="#latest" class="btn-ghost">記事を読み始める</a>
       </div>
+      <div class="stats-row">
+        <div class="stat"><span class="stat-num">{episodes.length}</span><span class="stat-label">公開記事</span></div>
+        <div class="stat"><span class="stat-num">{categories.length}</span><span class="stat-label">テーマ領域</span></div>
+        <div class="stat"><span class="stat-num">2媒体</span><span class="stat-label">YouTube / Podcast</span></div>
+      </div>
     </div>
   </section>
 
-  {/* ---------- 今週のピックアップ(Class Hero Block) ---------- */}
+  {/* ---------- 01 About: 日本AIジャーナルとは ---------- */}
+  <section class="section section-plate">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-eyebrow">01 — About</span>
+        <h2 class="section-title-lg">単なる書き起こしではありません。<br />取材の一次情報を、資産に。</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-main">
+          <p>
+            「日本AIジャーナル」は、AI業界の経営者・研究者・開発当事者を番組に招き、
+            <strong>技術とビジネスの実態を深く掘り下げる</strong>取材番組です。報道の現場で培った厳しい問いと事実確認の姿勢をそのままに、
+            ニュース記事では拾われない「現場で確かめた一次情報」を届けます。
+          </p>
+          <p>
+            このウェブ版では、動画の対話を記事として編集。比較表・検証データ・実践手順まで残し、
+            <strong>見返して参照できるナレッジベース</strong>として積み上げます。時間がない経営者・責任者ほど、まず要点から読めます。
+          </p>
+        </div>
+        <div class="about-cards">
+          <div class="concept-card">
+            <span class="concept-num">取材</span>
+            <p>報道現場の問いと事実確認。当事者しか語れない一次情報を、厳しい目で引き出す。</p>
+          </div>
+          <div class="concept-card">
+            <span class="concept-num">発信</span>
+            <p>YouTube / Podcastでマスへ。AIに関わるすべての人に、深い議論を届ける。</p>
+          </div>
+          <div class="concept-card">
+            <span class="concept-num">共創</span>
+            <p>尖った実践者との対話から、まだ形になっていない次のAI事業を一緒に考える。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 今週のピックアップ ---------- */}
   {featured && (
-    <section class="container" style="padding-bottom: 80px;">
+    <section class="container" style="padding: 80px 0;">
+      <div class="section-head">
+        <span class="section-eyebrow">Featured</span>
+      </div>
       <a
         href={`/episodes/${featured.id}/`}
         class="featured"
@@ -37,7 +81,7 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
       >
         <div class="featured-overlay">
           <span class="featured-label">注目の記事</span>
-          <h2 class="featured-title">{featured.data.title}</h2>
+          <h3 class="featured-title">{featured.data.title}</h3>
           <p class="featured-meta">{featured.data.summary}</p>
           <span class="btn-ghost">記事を読む</span>
         </div>
@@ -45,34 +89,43 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
     </section>
   )}
 
-  {/* ---------- このメディアの使い方(Membership Feature Row) ---------- */}
+  {/* ---------- 02 読み方の価値 ---------- */}
   <section class="container features">
-    <div class="feature-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2V5z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-      <div>
-        <p class="feature-title">視聴前に全体像をつかむ</p>
-        <p class="feature-body">要点と結論を先に読める。長尺動画でも3分で内容を判断でき、見る価値を確かめてから本編に進めます。</p>
-      </div>
+    <div class="section-head">
+      <span class="section-eyebrow">02 — Value</span>
+      <h2 class="section-title">このメディアの使い方</h2>
     </div>
-    <div class="feature-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
-      <div>
-        <p class="feature-title">視聴後に参照資料として戻る</p>
-        <p class="feature-body">モデル比較表、コスト検証データ、手順などをテキストで記録。「どこで言っていたか」を検索して引き出せます。</p>
+    <div class="features-grid">
+      <div class="feature-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2V5z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        <div>
+          <p class="feature-title">視聴前に全体像をつかむ</p>
+          <p class="feature-body">要点と結論を先に読める。長尺動画でも3分で内容を判断し、見る価値を確かめてから本編に進めます。</p>
+        </div>
       </div>
-    </div>
-    <div class="feature-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-      <div>
-        <p class="feature-title">公開は続く。知見は積み上がる</p>
-        <p class="feature-body">回を重ねるごとにテーマ別の知識ベースが育ちます。1つの記事から、関連する対話へたどれます。</p>
+      <div class="feature-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+        <div>
+          <p class="feature-title">視聴後に参照資料として戻る</p>
+          <p class="feature-body">モデル比較表、コスト検証データ、手順までテキストで記録。「どこで言っていたか」を検索して引き出せます。</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+        <div>
+          <p class="feature-title">知見が積み上がる</p>
+          <p class="feature-body">回を重ねるごとにテーマ別の知識ベースが育ちます。1つの記事から、関連する対話へたどれます。</p>
+        </div>
       </div>
     </div>
   </section>
 
-  {/* ---------- 記事一覧(カテゴリフィルター付き) ---------- */}
+  {/* ---------- 03 Archive ---------- */}
   <section id="latest" class="container" style="padding-bottom: 80px;">
-    <h2 class="section-title">All Episodes</h2>
+    <div class="section-head">
+      <span class="section-eyebrow">03 — Archive</span>
+      <h2 class="section-title">All Episodes</h2>
+    </div>
     <div class="pill-row">
       <a href="#" class="filter-pill active" data-filter="all">すべて</a>
       {categories.map((c) => (
@@ -98,8 +151,44 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
     </ul>
   </section>
 
+  {/* ---------- 04 参画パートナー向け ---------- */}
+  <section class="section section-plate">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-eyebrow">04 — Partners</span>
+        <h2 class="section-title-lg">一緒にAIの実装を<br />加速させる参画メリット</h2>
+      </div>
+      <div class="partner-grid">
+        <div class="partner-card">
+          <span class="partner-num">01</span>
+          <p class="partner-title">意思決定層への直接リーチ</p>
+          <p class="partner-body">大企業のAI導入・活用の意思決定層、中小企業の社長・役員層が、導入判断の材料として本メディアを読みます。</p>
+        </div>
+        <div class="partner-card">
+          <span class="partner-num">02</span>
+          <p class="partner-title">タイアップ・共同コンテンツ</p>
+          <p class="partner-body">出演や共同企画を通じて、貴社の取り組みを「報道の信頼性」とセットで伝えられます。編集独立性は別途、明示のうえ管理します。</p>
+        </div>
+        <div class="partner-card">
+          <span class="partner-num">03</span>
+          <p class="partner-title">公開収録・イベント接点</p>
+          <p class="partner-body">公開収録やイベントを通じて、法人の意思決定者と対話する場を設計できます。コンテンツは記事・動画・音声で再利用されます。</p>
+        </div>
+        <div class="partner-card">
+          <span class="partner-num">04</span>
+          <p class="partner-title">共創・新しい連携の設計</p>
+          <p class="partner-body">広告や研修の枠を超えて、共同実証やコンソーシアムなど、まだ形になっていない連携を一緒に設計することを目的のひとつにしています。</p>
+        </div>
+      </div>
+      <div class="partner-cta">
+        <p class="partner-cta-text">参画のご相談・タイアップのお問い合わせは、メディア担当まで。</p>
+        <a href="mailto:contact@example.com" class="btn-ghost">参画のご相談はこちら</a>
+      </div>
+    </div>
+  </section>
+
   {/* ---------- 登録導線パネル ---------- */}
-  <section class="container">
+  <section class="container" style="padding: 80px 0;">
     <div class="cta-panel">
       <h2 class="cta-title">毎回、実戦のAIを配信中</h2>
       <p class="cta-body">
