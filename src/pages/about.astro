@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site.config';
+---
+
+<Base
+  title="番組について｜日本AIジャーナル ウェブ版"
+  description="日本AIジャーナルは、AI業界の経営者・研究者・開発者・導入企業に深く聞く取材番組です。YouTubeとPodcastで毎週配信しています。"
+  ogImage="/still-closeup.jpg"
+>
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <p class="page-kicker">番組について</p>
+      <h1 class="page-title">当事者に、深く聞く。</h1>
+      <p class="page-lede">
+        日本AIジャーナルは、日本経済新聞社の取材力・信頼を背景に、MC北爪がAI業界の当事者を招いて、技術とビジネスの実態を掘り下げる取材番組です。
+      </p>
+    </div>
+    <figure class="page-still">
+      <img src="/still-closeup.jpg" alt="番組の収録で話すゲスト" width="1280" height="720" />
+    </figure>
+  </section>
+
+  <section class="page-section">
+    <div class="container split">
+      <h2 class="split-title">番組とウェブ版</h2>
+      <div class="prose">
+        <p>
+          ゲストは、AIを事業にしている経営者、研究者、開発の現場にいるエンジニア、そしてAIを導入した企業の担当者です。成功した話だけでなく、つまずいた理由や、乗り越えるまでの具体的な手順まで聞いていきます。
+        </p>
+        <p>
+          このウェブ版では、収録で得た対話を記事として編集しています。ニュースでは拾われない現場の一次情報を、比較表・検証データ・実践の手順まで残して記録し、AI導入を検討する方が判断材料として使いやすい形に整えています。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container">
+      <h2 class="section-title">大切にしていること</h2>
+      <div class="values">
+        <div class="value">
+          <h3 class="value-word">取材</h3>
+          <p>報道の現場と同じ問いと事実確認で、当事者にしか語れない一次情報を引き出します。</p>
+        </div>
+        <div class="value">
+          <h3 class="value-word">発信</h3>
+          <p>YouTubeとPodcastで、AIに関わるすべての人に深い議論を届けます。記事は社内共有や資料づくりにも使えます。</p>
+        </div>
+        <div class="value">
+          <h3 class="value-word">共創</h3>
+          <p>尖った実践者との対話から、まだ形になっていない次のAI事業を一緒に考えます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container split">
+      <h2 class="split-title">こんな方に<br />読まれています</h2>
+      <dl class="audience">
+        <div>
+          <dt>大企業のAI導入・活用の意思決定層</dt>
+          <dd>全社導入を判断する経営層・部門責任者。導入から業務成果・生産性向上までの実態を知りたい方。</dd>
+        </div>
+        <div>
+          <dt>中小企業の社長・役員層</dt>
+          <dd>限られたリソースでAIを業務に活かしたい経営者。コストと成果を両立した実例を探している方。</dd>
+        </div>
+        <div>
+          <dt>DX・業務改革・開発の担当者</dt>
+          <dd>ツール選定やエージェント運用の実務を担う現場リーダー・エンジニア。手順や検証データをそのまま使いたい方。</dd>
+        </div>
+        <div>
+          <dt>AIの動向を追うすべての人</dt>
+          <dd>AI・技術・働き方の変化に関心のある方。感情論ではなく、当事者の生の声を聞きたい方。</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container split">
+      <h2 class="split-title">配信</h2>
+      <dl class="channels">
+        <div>
+          <dt>YouTube</dt>
+          <dd>毎週配信。画面の操作や出力例など、映像で見たほうがわかる内容はこちらで。</dd>
+          <dd><a class="text-link" href={SITE.channelUrl}>チャンネルを開く</a></dd>
+        </div>
+        <div>
+          <dt>Podcast</dt>
+          <dd>移動中や作業中に、対話をそのまま聞けます。</dd>
+          {SITE.podcastUrl && <dd><a class="text-link" href={SITE.podcastUrl}>Podcastを開く</a></dd>}
+        </div>
+        <div>
+          <dt>ウェブ版</dt>
+          <dd>要点と全文を記事で。検索して読み返せるナレッジとして使えます。</dd>
+          <dd><a class="text-link" href="/#articles">記事一覧へ</a></dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="page-section page-section-last">
+    <div class="container">
+      <div class="partner-band">
+        <div>
+          <h2 class="partner-band-title">スポンサー・協業のご相談</h2>
+          <p>タイアップ、公開収録、共同企画など、番組と一緒に取り組みたい企業の方はこちらから。</p>
+        </div>
+        <a class="btn btn-light" href="/partners/">スポンサーについて見る</a>
+      </div>
+    </div>
+  </section>
+</Base>
