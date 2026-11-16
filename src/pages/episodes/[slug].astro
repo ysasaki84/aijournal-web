@@ -1,65 +1,98 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import { getEpisodes, readingMinutes, formatDate, isoDate, thumb, type Episode } from '../../lib/episodes';
 
 export async function getStaticPaths() {
-  const episodes = await getCollection('episodes');
-  return episodes
-    .filter((episode) => !episode.data.draft || import.meta.env.DEV)
-    .map((episode) => ({
-      params: { slug: episode.id },
-      props: { episode },
-    }));
+  const episodes = await getEpisodes();
+  return episodes.map((episode) => {
+    // あわせて読みたい：同じテーマを優先し、残りは新しい順
+    const others = episodes.filter((e) => e.id !== episode.id);
+    const sameTheme = others.filter((e) => episode.data.category && e.data.category === episode.data.category);
+    const related = [...sameTheme, ...others.filter((e) => !sameTheme.includes(e))].slice(0, 3);
+    return { params: { slug: episode.id }, props: { episode, related } };
+  });
 }
 
-const { episode } = Astro.props;
+interface Props {
+  episode: Episode;
+  related: Episode[];
+}
+
+const { episode, related } = Astro.props;
 const { Content } = await render(episode);
 const { title, youtubeId, publishedAt, guest, category, summary, points } = episode.data;
 const watchUrl = `https://www.youtube.com/watch?v=${youtubeId}`;
 ---
 
-<Base title={`${title}｜日本AIジャーナル ウェブ版`}>
-  <article>
-    <div class="container-narrow episode-header">
-      <div class="episode-meta">
-        <span class="pill">{category}</span>
-        <span>{publishedAt.toISOString().slice(0, 10)}</span>
-        {guest && <span>{guest}</span>}
+<Base title={`${title}｜日本AIジャーナル ウェブ版`} description={summary} ogImage={thumb(youtubeId)}>
+  <article class="episode">
+    <header class="container-narrow episode-head">
+      <a class="back-link" href="/#articles">記事一覧</a>
+      <div class="meta">
+        {category && <span class="meta-cat">{category}</span>}
+        <time datetime={isoDate(publishedAt)}>{formatDate(publishedAt)}</time>
+        <span>{readingMinutes(episode)}分で読める</span>
       </div>
       <h1 class="episode-title">{title}</h1>
+      {guest && <p class="episode-guest">ゲスト　{guest}</p>}
+    </header>
+
+    <div class="container-wide">
+      <div class="video-embed">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+          title={`動画：${title}`}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
     </div>
 
     <div class="container-narrow">
-      <div class="video-embed">
-        <iframe
-          src={`https://www.youtube.com/embed/${youtubeId}`}
-          title={title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>
-      </div>
-      <div class="video-cta">
-        <a href={watchUrl} class="btn-primary">YouTubeで本編を見る</a>
-        <span class="hint">画面・出力例・トークン消費の推移は本編で</span>
-      </div>
-
-      <div class="summary"><strong>この記事の要点</strong><br />{summary}</div>
-
-      {points.length > 0 && (
-        <ul class="points">
-          {points.map((point) => <li>{point}</li>)}
-        </ul>
-      )}
+      <section class="digest" aria-labelledby="digest-title">
+        <h2 class="digest-title" id="digest-title">この記事の要点</h2>
+        <p class="digest-summary">{summary}</p>
+        {
+          points.length > 0 && (
+            <ul class="digest-points">
+              {points.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+          )
+        }
+      </section>
 
       <div class="article-body">
         <Content />
       </div>
 
-      <div class="article-footer">
-        <a href="/" class="back-link">← 記事一覧へ戻る</a>
-        <a href={watchUrl} class="btn-ghost">動画本編を見る</a>
-      </div>
+      <aside class="watch-cta">
+        <p>画面の操作や出力例、議論の温度感は動画本編で。</p>
+        <a href={watchUrl} class="btn btn-light">YouTubeで本編を見る</a>
+      </aside>
     </div>
   </article>
+
+  {
+    related.length > 0 && (
+      <section class="related" aria-labelledby="related-title">
+        <div class="container">
+          <h2 class="section-title" id="related-title">
+            あわせて読みたい
+          </h2>
+          <ul class="card-grid card-grid-3">
+            {related.map((e) => (
+              <li>
+                <EpisodeCard episode={e} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 </Base>
