@@ -14,14 +14,14 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
   {/* ---------- ヒーロー ---------- */}
   <section class="hero hero-glow">
     <div class="container">
-      <span class="pill hero-eyebrow">YouTubeの実戦対話を、文章のナレッジベースに</span>
-      <h1>AIの実戦を、<br />読める資産に。</h1>
+      <span class="pill hero-eyebrow">企業のAI導入・活用の判断に役立つ、取材メディア</span>
+      <h1>AIを導入する前に、<br />現場の実話を聞こう。</h1>
       <p class="lede">
-        日本経済新聞社の取材力と信頼を背景に、MC北爪が当事者に深く聞く「日本AIジャーナル」。その検証と対話を、意思決定に耐える文章として公開しています。
+        「日本AIジャーナル」は、AI業界の経営者・研究者・開発当事者に深く聞く取材番組です。このサイトでは番組の対話を記事化し、モデル比較のコスト検証から企業導入の失敗と克服まで——<strong>導入判断と活用に役立つ一次情報</strong>だけを無料で公開しています。
       </p>
       <div class="hero-actions">
-        <a href={`${channelUrl}?sub_confirmation=1`} class="btn-primary">YouTubeチャンネル登録</a>
-        <a href="#latest" class="btn-ghost">記事を読み始める</a>
+        <a href="#latest" class="btn-primary">記事を読み始める</a>
+        <a href={`${channelUrl}?sub_confirmation=1`} class="btn-ghost">YouTube本編を見る</a>
       </div>
       <div class="stats-row">
         <div class="stat"><span class="stat-num">{episodes.length}</span><span class="stat-label">公開記事</span></div>
@@ -36,18 +36,15 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
     <div class="container">
       <div class="section-head">
         <span class="section-eyebrow">01 — About</span>
-        <h2 class="section-title-lg">単なる書き起こしではありません。<br />取材の一次情報を、資産に。</h2>
+        <h2 class="section-title-lg">日本AIジャーナルとは</h2>
       </div>
       <div class="about-grid">
         <div class="about-main">
           <p>
-            「日本AIジャーナル」は、AI業界の経営者・研究者・開発当事者を番組に招き、
-            <strong>技術とビジネスの実態を深く掘り下げる</strong>取材番組です。報道の現場で培った厳しい問いと事実確認の姿勢をそのままに、
-            ニュース記事では拾われない「現場で確かめた一次情報」を届けます。
+            日本経済新聞社の取材力・信頼を背景に、MC北爪がAI業界の<strong>当事者</strong>——経営者、研究者、開発者、導入企業——を招き、技術とビジネスの実態を掘り下げる取材番組です。YouTubeとPodcastで毎週配信しています。
           </p>
           <p>
-            このウェブ版では、動画の対話を記事として編集。比較表・検証データ・実践手順まで残し、
-            <strong>見返して参照できるナレッジベース</strong>として積み上げます。時間がない経営者・責任者ほど、まず要点から読めます。
+            このウェブ版では、収録で得た対話を記事として編集・公開。ニュースでは拾われない<strong>現場の一次情報</strong>を、比較表・検証データ・実践手順まで残して記録し、AI導入を検討する方の判断材料として使いやすく整えています。
           </p>
         </div>
         <div class="about-cards">
@@ -57,11 +54,34 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
           </div>
           <div class="concept-card">
             <span class="concept-num">発信</span>
-            <p>YouTube / Podcastでマスへ。AIに関わるすべての人に、深い議論を届ける。</p>
+            <p>YouTube / Podcastで幅広い層へ。AIに関わるすべての人に、深い議論を届ける。</p>
           </div>
           <div class="concept-card">
             <span class="concept-num">共創</span>
             <p>尖った実践者との対話から、まだ形になっていない次のAI事業を一緒に考える。</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 対象者 */}
+      <div class="audience-block">
+        <h3 class="audience-heading">こんな方に読まれています</h3>
+        <div class="audience-grid">
+          <div class="audience-card">
+            <p class="audience-title">大企業のAI導入・活用の意思決定層</p>
+            <p class="audience-body">全社導入を判断する経営層・部門責任者。導入から業務成果・生産性向上までの実態を知りたい方。</p>
+          </div>
+          <div class="audience-card">
+            <p class="audience-title">中小企業の社長・役員層</p>
+            <p class="audience-body">限られたリソースでAIを業務に活かしたい経営者。コストと成果の両立する実例を探している方。</p>
+          </div>
+          <div class="audience-card">
+            <p class="audience-title">DX・業務改革・開発の担当者</p>
+            <p class="audience-body">ツール選定やエージェント運用の実務を担う現場リーダー・エンジニア。手順や検証データをそのまま使いたい方。</p>
+          </div>
+          <div class="audience-card">
+            <p class="audience-title">AIの動向を追うすべての人</p>
+            <p class="audience-body">AI・技術・働き方の変化に関心のある一般の方。感情論ではなく当事者の生の声を聞きたい方。</p>
           </div>
         </div>
       </div>
@@ -89,32 +109,32 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
     </section>
   )}
 
-  {/* ---------- 02 読み方の価値 ---------- */}
+  {/* ---------- 02 読者に届ける価値 ---------- */}
   <section class="container features">
     <div class="section-head">
       <span class="section-eyebrow">02 — Value</span>
-      <h2 class="section-title">このメディアの使い方</h2>
+      <h2 class="section-title">このメディアがお届けすること</h2>
     </div>
     <div class="features-grid">
       <div class="feature-row">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2V5z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
         <div>
-          <p class="feature-title">視聴前に全体像をつかむ</p>
-          <p class="feature-body">要点と結論を先に読める。長尺動画でも3分で内容を判断し、見る価値を確かめてから本編に進めます。</p>
+          <p class="feature-title">判断に使える比較と検証データ</p>
+          <p class="feature-body">モデル別のコスト比較、同一タスクでの生成実験など、採用・予算判断に直結するデータを表として残します。</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.1-2.6 5.6-.8.9-1.4 2-1.4 3.4h-6c0-1.4-.6-2.5-1.4-3.4C6.2 13.1 5 11.4 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/></svg>
+        <div>
+          <p class="feature-title">導入の前に知れる現場の実例</p>
+          <p class="feature-body">成功事例だけでなく、「導入4つの罠」のような失敗の構造や、組織改革の具体的な手順まで当事者の口から語られます。</p>
         </div>
       </div>
       <div class="feature-row">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
         <div>
-          <p class="feature-title">視聴後に参照資料として戻る</p>
-          <p class="feature-body">モデル比較表、コスト検証データ、手順までテキストで記録。「どこで言っていたか」を検索して引き出せます。</p>
-        </div>
-      </div>
-      <div class="feature-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-        <div>
-          <p class="feature-title">知見が積み上がる</p>
-          <p class="feature-body">回を重ねるごとにテーマ別の知識ベースが育ちます。1つの記事から、関連する対話へたどれます。</p>
+          <p class="feature-title">検索して戻れるナレッジベース</p>
+          <p class="feature-body">要点と全文の記録を残すので、社内共有や資料づくりにそのまま引用できます。読み終えた記事は辞書のように使えます。</p>
         </div>
       </div>
     </div>
@@ -156,7 +176,7 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
     <div class="container">
       <div class="section-head">
         <span class="section-eyebrow">04 — Partners</span>
-        <h2 class="section-title-lg">一緒にAIの実装を<br />加速させる参画メリット</h2>
+        <h2 class="section-title-lg">日本AIジャーナルと<br />取り組みたい企業へ</h2>
       </div>
       <div class="partner-grid">
         <div class="partner-card">
@@ -190,7 +210,7 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
   {/* ---------- 登録導線パネル ---------- */}
   <section class="container" style="padding: 80px 0;">
     <div class="cta-panel">
-      <h2 class="cta-title">毎回、実戦のAIを配信中</h2>
+      <h2 class="cta-title">毎週、当事者の話を配信中</h2>
       <p class="cta-body">
         新しい検証・対話はYouTube本編で公開。通知をオンにすると、記事化のタイミングも取りこぼしません。
       </p>
@@ -203,7 +223,7 @@ const channelUrl = 'https://www.youtube.com/@nipponaijournal';
     <div class="container promo-inner">
       <img src="/logo-mark.png" alt="" class="promo-avatar" />
       <div class="promo-text">
-        <p class="promo-title">日本AIジャーナル — 毎週、AIの実戦を配信</p>
+        <p class="promo-title">日本AIジャーナル — 企業のAI導入判断に役立つ一次情報を、毎週配信</p>
         <p class="promo-sub">記事は本編公開後に追加されます</p>
       </div>
       <a href={`${channelUrl}?sub_confirmation=1`} class="btn-primary">チャンネル登録</a>
