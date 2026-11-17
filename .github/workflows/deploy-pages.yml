@@ -1,11 +1,13 @@
 name: Deploy preview to GitHub Pages
 
-# redesign ブランチのプレビューを GitHub Pages に公開する（main は変更しない）。
-# ソースは絶対パス（/...）前提のため、ビルド後に /aijournal-web/ プレフィックスを付与して
-# サブパス配信に対応させる（ソースコードは変更しない）。
+# 2バージョンを同一Pagesサイトに並べて公開する（main は変更しない）:
+#   - ダーク版(redesign)    → /aijournal-web/
+#   - ライト版(light-theme) → /aijournal-web/light/
+# ソースは絶対パス(/...)前提のため、ビルド後に各プレフィックスを付与してサブパス配信に対応
+# させる（ソースコードは変更しない）。どちらのブランチへ push しても両方を最新で再ビルドする。
 on:
   push:
-    branches: [redesign]
+    branches: [redesign, light-theme]
   workflow_dispatch:
 
 permissions:
@@ -21,17 +23,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # ---------- ダーク版（ルート /aijournal-web/）----------
+      - name: Checkout dark (redesign)
+        uses: actions/checkout@v4
+        with:
+          ref: redesign
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Rewrite absolute paths for /aijournal-web/ subpath
+      - name: Rewrite dark paths for /aijournal-web/
         run: |
           find dist -type f \( -name '*.html' -o -name '*.css' \) -print0 \
             | xargs -0 perl -0pi -e 's{(["\(])/(?!/)}{$1/aijournal-web/}g'
+
+      # ---------- ライト版（/aijournal-web/light/）----------
+      - name: Checkout light (light-theme)
+        uses: actions/checkout@v4
+        with:
+          ref: light-theme
+          path: light-src
+      - name: Build light
+        working-directory: light-src
+        run: |
+          npm ci
+          npm run build
+      - name: Rewrite light paths for /aijournal-web/light/
+        run: |
+          find light-src/dist -type f \( -name '*.html' -o -name '*.css' \) -print0 \
+            | xargs -0 perl -0pi -e 's{(["\(])/(?!/)}{$1/aijournal-web/light/}g'
+
+      # ---------- 結合してアップロード ----------
+      - name: Combine dark + light
+        run: |
+          mkdir -p dist/light
+          cp -R light-src/dist/. dist/light/
           touch dist/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
