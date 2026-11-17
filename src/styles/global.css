@@ -1700,7 +1700,8 @@ figure {
   }
 
   .hero-video {
-    object-position: 62% 50%;
+    /* モバイルは縦動画。中央基準で全面に表示する */
+    object-position: 50% 50%;
   }
 
   .hero-grade {

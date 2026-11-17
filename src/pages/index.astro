@@ -31,7 +31,10 @@ const categories = [...new Set(episodes.map((e) => e.data.category).filter(Boole
         playsinline
         preload="auto"
         poster="/hero-poster.jpg"
+        data-poster-mobile="/hero-mobile-poster.jpg"
       >
+        {/* モバイル（縦画面）は専用の縦動画。横動画の左右見切れを防ぐ */}
+        <source src="/hero-mobile.mp4" type="video/mp4" media="(max-width: 640px)" />
         <source src="/hero-loop.mp4" type="video/mp4" />
       </video>
       <div class="hero-grade"></div>
@@ -188,6 +191,26 @@ const categories = [...new Set(episodes.map((e) => e.data.category).filter(Boole
   // 背景映像の再生／一時停止（視覚的な動きを減らす設定の場合は最初から停止）
   const video = document.querySelector<HTMLVideoElement>('.hero-video');
   const toggle = document.querySelector<HTMLButtonElement>('.hero-toggle');
+
+  // モバイル（縦画面）では縦動画・縦ポスターを確実に使う。
+  // <source media> を解釈しないブラウザでも正しい動画に差し替える保険。
+  if (video) {
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    const mobilePoster = video.dataset.posterMobile;
+    if (isMobile) {
+      if (mobilePoster) video.poster = mobilePoster;
+      const sources = Array.from(video.querySelectorAll<HTMLSourceElement>('source'));
+      const mobileSrc = sources.find((s) => s.hasAttribute('media'))?.getAttribute('src');
+      if (mobileSrc) {
+        const current = (video.currentSrc || '').split('/').pop();
+        if (current !== mobileSrc.split('/').pop()) {
+          video.src = mobileSrc;
+          video.load();
+          video.play().catch(() => {});
+        }
+      }
+    }
+  }
   if (video && toggle) {
     const setPaused = (paused: boolean) => {
       if (paused) video.pause();
