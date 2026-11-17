@@ -21,6 +21,12 @@
   --ember-light: #ffa877;
   --ember-glow: rgba(255, 107, 44, 0.18);
 
+  /* テーマ切替用。グラデーション等が配色に追従できるようRGB値も変数化。
+     ライト版は :root[data-theme="light"] で上書きする（黒↔白を属性1つで切替）。 */
+  --page-bg: #0b0f19; /* セクション下端のフェード先（＝ページ背景） */
+  --ink-rgb: 11, 15, 25;
+  --paper-rgb: 238, 234, 227;
+
   /* Type */
   --font-display: 'Shippori Mincho B1', 'Noto Serif JP', 'Noto Serif CJK JP', 'Hiragino Mincho ProN',
     'Yu Mincho', serif;
@@ -33,6 +39,75 @@
   --header-h: 72px;
   --radius: 6px;
   --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+
+/* ==========================================================
+   ライトテーマ（クライアント向け：白ベース＋ヒラギノ角ゴ）
+   <html data-theme="light"> で有効化。属性を外せば即ダークに戻る。
+   ヒーローは映像セクションなので従来どおり暗いまま（.hero で再スコープ）。
+   ========================================================== */
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --ink: #f7f5f0; /* ページ背景（やや暖かみのある白） */
+  --ink-raised: #ffffff; /* カード等の浮いた面 */
+  --ink-sunk: #ece9e2; /* 沈んだ面 */
+  --paper: #191c23; /* 本文テキスト（ほぼ黒） */
+  --paper-dim: rgba(25, 28, 35, 0.72);
+  --mute: #58606f;
+  --faint: #828a99;
+  --line: rgba(25, 28, 35, 0.12);
+  --line-strong: rgba(25, 28, 35, 0.2);
+  /* エンバー（オレンジ）はアクセントとして白地でも有効なので据え置き */
+
+  --page-bg: #f7f5f0;
+  --ink-rgb: 247, 245, 240;
+  --paper-rgb: 25, 28, 35;
+
+  /* フォントはヒラギノ角ゴ主体（見出しの明朝もゴシックに統一し、企業向けの端正な印象に） */
+  --font-display: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic',
+    'Meiryo', sans-serif;
+  --font-body: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', 'Meiryo',
+    sans-serif;
+}
+
+/* ライト時もヒーローは暗い映像＋白文字を維持（パレットをヒーロー内だけダークに戻す）。
+   背景下端のフェード先 --page-bg は再スコープしないので、白ページへ滑らかに繋がる。 */
+:root[data-theme='light'] .hero {
+  --ink: #0b0f19;
+  --ink-raised: #121826;
+  --paper: #eeeae3;
+  --paper-dim: rgba(238, 234, 227, 0.86);
+  --mute: #9aa2b4;
+  --faint: #6b7387;
+  --line: rgba(205, 214, 240, 0.13);
+  --line-strong: rgba(205, 214, 240, 0.28);
+  --ink-rgb: 11, 15, 25;
+  --paper-rgb: 238, 234, 227;
+  color: var(--paper);
+}
+
+/* トップの透明ヘッダー（ヒーロー映像に重なる状態）は、下が暗い映像なので文字を白に保つ。
+   スクロールして白い帯（.is-solid / .is-open）になったら通常のダーク文字へ戻る。 */
+:root[data-theme='light']
+  .site-header[data-overlay]:not(.is-solid):not(.is-open) {
+  --paper: #eeeae3;
+  --paper-dim: rgba(238, 234, 227, 0.86);
+  --mute: #9aa2b4;
+  --line: rgba(205, 214, 240, 0.13);
+  --line-strong: rgba(205, 214, 240, 0.28);
+  --ink-rgb: 11, 15, 25;
+  --paper-rgb: 238, 234, 227;
+  color: var(--paper);
+}
+
+/* 白ページ上の主ボタン（.btn-light）はダーク背景＋白文字として自然に反転する。
+   ホバーだけは白にならないよう調整（ヒーロー内のボタンは従来どおり白ホバー）。 */
+:root[data-theme='light'] .btn-light:hover {
+  background: #33373f;
+}
+:root[data-theme='light'] .hero .btn-light:hover {
+  background: #fff;
 }
 
 /* ---------- Base ---------- */
@@ -177,15 +252,15 @@ figure {
 }
 
 .btn-line {
-  border-color: rgba(238, 234, 227, 0.42);
+  border-color: rgba(var(--paper-rgb), 0.42);
   color: var(--paper);
-  background: rgba(11, 15, 25, 0.2);
+  background: rgba(var(--ink-rgb), 0.2);
   backdrop-filter: blur(6px);
 }
 
 .btn-line:hover {
   border-color: var(--paper);
-  background: rgba(238, 234, 227, 0.08);
+  background: rgba(var(--paper-rgb), 0.08);
 }
 
 .btn-sm {
@@ -213,7 +288,7 @@ figure {
   inset: 0 0 auto;
   z-index: 50;
   height: var(--header-h);
-  background: rgba(11, 15, 25, 0.86);
+  background: rgba(var(--ink-rgb), 0.86);
   backdrop-filter: blur(14px) saturate(1.2);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   box-shadow: 0 1px 0 var(--line);
@@ -231,7 +306,7 @@ figure {
 
 .site-header[data-overlay].is-solid,
 .site-header[data-overlay].is-open {
-  background: rgba(11, 15, 25, 0.86);
+  background: rgba(var(--ink-rgb), 0.86);
   backdrop-filter: blur(14px) saturate(1.2);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   box-shadow: 0 1px 0 var(--line);
@@ -389,9 +464,9 @@ figure {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(11, 15, 25, 0.35) 0%, rgba(11, 15, 25, 0) 24%, rgba(11, 15, 25, 0) 58%, rgba(11, 15, 25, 0.6) 86%, var(--ink) 100%),
+    linear-gradient(180deg, rgba(var(--ink-rgb), 0.35) 0%, rgba(var(--ink-rgb), 0) 24%, rgba(var(--ink-rgb), 0) 58%, rgba(var(--ink-rgb), 0.6) 86%, var(--page-bg) 100%),
     radial-gradient(90% 60% at 0% 78%, rgba(255, 107, 44, 0.2), transparent 60%),
-    linear-gradient(90deg, rgba(11, 15, 25, 0.9) 0%, rgba(11, 15, 25, 0.62) 34%, rgba(11, 15, 25, 0.12) 68%, rgba(11, 15, 25, 0.05) 100%);
+    linear-gradient(90deg, rgba(var(--ink-rgb), 0.9) 0%, rgba(var(--ink-rgb), 0.62) 34%, rgba(var(--ink-rgb), 0.12) 68%, rgba(var(--ink-rgb), 0.05) 100%);
 }
 
 /* フィルムの粒子 */
@@ -531,7 +606,7 @@ figure {
   padding: 0;
   border: 1px solid var(--line-strong);
   border-radius: 50%;
-  background: rgba(11, 15, 25, 0.3);
+  background: rgba(var(--ink-rgb), 0.3);
   color: var(--paper);
   cursor: pointer;
   transition: border-color 0.2s ease;
@@ -1021,7 +1096,7 @@ figure {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, var(--ink) 0%, rgba(11, 15, 25, 0) 22%, rgba(11, 15, 25, 0) 62%, var(--ink) 100%),
+    linear-gradient(180deg, var(--page-bg) 0%, rgba(var(--ink-rgb), 0) 22%, rgba(var(--ink-rgb), 0) 62%, var(--page-bg) 100%),
     radial-gradient(80% 90% at 0% 100%, rgba(255, 107, 44, 0.16), transparent 60%);
 }
 
@@ -1640,7 +1715,7 @@ figure {
     align-items: stretch;
     gap: 20px;
     padding: 12px var(--gutter) 28px;
-    background: rgba(11, 15, 25, 0.97);
+    background: rgba(var(--ink-rgb), 0.97);
     border-bottom: 1px solid var(--line);
   }
 
@@ -1706,7 +1781,7 @@ figure {
 
   .hero-grade {
     background:
-      linear-gradient(180deg, rgba(11, 15, 25, 0.45) 0%, rgba(11, 15, 25, 0.25) 30%, rgba(11, 15, 25, 0.82) 62%, var(--ink) 100%),
+      linear-gradient(180deg, rgba(var(--ink-rgb), 0.45) 0%, rgba(var(--ink-rgb), 0.25) 30%, rgba(var(--ink-rgb), 0.82) 62%, var(--page-bg) 100%),
       radial-gradient(120% 50% at 0% 70%, rgba(255, 107, 44, 0.22), transparent 60%);
   }
 
