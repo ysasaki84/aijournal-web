@@ -84,21 +84,82 @@ import { SITE } from '../site.config';
               スポンサー、タイアップ、公開収録、共同企画について、下のフォームからご連絡ください。内容を確認のうえ、担当者からご返信します。
             </p>
           </header>
-          <div class="form-frame">
-            <iframe
-              src={SITE.contactFormEmbedUrl}
-              title="日本AIジャーナル お問い合わせフォーム"
-              loading="lazy"
-              referrerpolicy="strict-origin-when-cross-origin"
-            >
-              <a href={SITE.contactFormUrl}>お問い合わせフォームを開く</a>
-            </iframe>
-          </div>
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="field">
+              <label for="cf-company">会社名・団体名</label>
+              <input id="cf-company" name="company" autocomplete="organization" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="cf-name">お名前<span class="req">必須</span></label>
+                <input id="cf-name" name="name" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="cf-email">メールアドレス<span class="req">必須</span></label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" required />
+              </div>
+            </div>
+            <div class="field">
+              <label for="cf-message">お問い合わせ内容<span class="req">必須</span></label>
+              <textarea id="cf-message" name="message" rows="6" required></textarea>
+            </div>
+            <div class="field">
+              <label for="cf-url">関連URL</label>
+              <input id="cf-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="https://" />
+            </div>
+            <label class="consent">
+              <input type="checkbox" name="consent" required />
+              <span>
+                ご入力いただいた個人情報は、<a href={SITE.contactPrivacyUrl} target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>に基づき、お問い合わせへの回答・ご連絡および付随する業務のために利用します。以上の内容に同意する。
+              </span>
+            </label>
+            <div class="form-actions">
+              <button class="btn btn-light" type="submit">送信する</button>
+              <p class="form-note">入力内容は Google フォームに記録されます。</p>
+            </div>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+          <p class="contact-done" id="contact-done" hidden>
+            お問い合わせありがとうございます。内容を確認のうえ、担当者よりご連絡いたします。
+          </p>
           <p class="contact-fallback">
-            <a class="text-link" href={SITE.contactFormUrl} target="_blank" rel="noopener noreferrer">別のタブで開く</a>
+            画面が変わらないときは、通信を制限する拡張機能をオフにするか、<a class="text-link" href={SITE.contactFormUrl} target="_blank" rel="noopener noreferrer">フォームを別のタブで開いて</a>お送りください。
           </p>
         </div>
       </div>
     </div>
   </section>
 </Base>
+
+<script define:vars={{ endpoint: SITE.contactFormResponseUrl, fields: SITE.contactFields, consentValue: SITE.contactConsentValue }}>
+  const form = document.querySelector('#contact-form');
+  const done = document.querySelector('#contact-done');
+  const status = form?.querySelector('.form-status');
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const button = form.querySelector('button');
+    if (button) button.disabled = true;
+    const data = new FormData(form);
+    const value = (key) => String(data.get(key) ?? '').trim();
+    const body = new URLSearchParams();
+    const put = (entry, text) => {
+      if (text) body.set(entry, text);
+    };
+    put(fields.company, value('company'));
+    body.set(fields.name, value('name'));
+    body.set(fields.email, value('email'));
+    body.set(fields.message, value('message'));
+    put(fields.url, value('url'));
+    body.set(fields.consent, consentValue);
+    body.set('fvv', '1');
+    try {
+      await fetch(endpoint, { method: 'POST', mode: 'no-cors', body });
+      form.hidden = true;
+      if (done) done.hidden = false;
+    } catch {
+      if (button) button.disabled = false;
+      if (status) status.textContent = '送信できませんでした。下のリンクから別のタブでお送りください。';
+    }
+  });
+</script>

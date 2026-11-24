@@ -1216,24 +1216,53 @@ figure {
   color: var(--mute);
 }
 
-.form-frame {
-  overflow: hidden;
-  border: 1px solid var(--line-strong);
-  border-radius: 8px;
-  background: var(--paper);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-}
-
-.form-frame iframe {
-  display: block;
-  width: 100%;
-  height: 1520px;
-  border: 0;
-  background: #fff;
-}
-
 .contact-fallback {
   font-size: 14px;
+  line-height: 1.8;
+  color: var(--mute);
+}
+
+.contact-fallback .text-link {
+  display: inline;
+}
+
+.req {
+  margin-left: 8px;
+  color: var(--ember-light);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.consent {
+  display: grid;
+  grid-template-columns: 1.15em minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--paper-dim);
+}
+
+.consent input {
+  width: 1.15em;
+  height: 1.15em;
+  margin-top: 0.4em;
+  accent-color: var(--ember);
+}
+
+.consent a {
+  color: var(--paper);
+  border-bottom: 1px solid var(--ember);
+}
+
+.contact-form button:disabled {
+  opacity: 0.55;
+}
+
+.contact-done {
+  font-size: 16.5px;
+  line-height: 2;
+  color: var(--paper-dim);
 }
 
 .contact-form {
@@ -1731,10 +1760,6 @@ figure {
   .hero-video {
     /* モバイルは縦動画。中央基準で全面に表示する */
     object-position: 50% 50%;
-  }
-
-  .form-frame iframe {
-    height: 1720px;
   }
 
   .hero-grade {
