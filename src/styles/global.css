@@ -1191,27 +1191,37 @@ figure {
   color: var(--mute);
 }
 
-/* ---------- Contact（Googleフォーム） ---------- */
-.contact {
-  display: grid;
-  gap: 28px;
+/* ---------- Contact（Googleフォーム） ----------
+   フォーム本体は Google の画面なので、外側だけサイトの面・罫・エンバーで包む。 */
+.contact-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background:
+    radial-gradient(70% 80% at 100% 0%, var(--ember-glow), transparent 58%),
+    var(--ink-raised);
+  padding: clamp(28px, 4vw, 56px);
 }
 
-.contact-intro {
-  max-width: 40rem;
+.contact-layout {
+  display: grid;
+  gap: 28px;
+  max-width: 760px;
 }
 
 .contact-intro p {
   margin-top: 16px;
+  max-width: 38em;
   color: var(--mute);
 }
 
 .form-frame {
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
 }
 
 .form-frame iframe {
@@ -1220,6 +1230,10 @@ figure {
   height: 1520px;
   border: 0;
   background: #fff;
+}
+
+.contact-fallback {
+  font-size: 14px;
 }
 
 .contact-form {

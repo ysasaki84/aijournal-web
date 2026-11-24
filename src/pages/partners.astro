@@ -74,25 +74,30 @@ import { SITE } from '../site.config';
   </section>
 
   <section class="page-section page-section-last" id="contact" aria-labelledby="contact-title">
-    <div class="container contact">
-      <div class="contact-intro">
-        <h2 class="section-title" id="contact-title">ご相談はこちら</h2>
-        <p>
-          スポンサー、タイアップ、公開収録、共同企画について、フォームからご連絡ください。内容を確認のうえ、担当者からご返信します。
-        </p>
-        <p>
-          <a class="text-link" href={SITE.contactFormUrl} target="_blank" rel="noopener noreferrer">別のタブで開く</a>
-        </p>
-      </div>
-      <div class="form-frame">
-        <iframe
-          src={SITE.contactFormEmbedUrl}
-          title="日本AIジャーナル お問い合わせフォーム"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-        >
-          <a href={SITE.contactFormUrl}>お問い合わせフォームを開く</a>
-        </iframe>
+    <div class="container">
+      <div class="contact-shell">
+        <div class="contact-layout">
+          <header class="contact-intro">
+            <p class="page-kicker">お問い合わせ</p>
+            <h2 class="section-title" id="contact-title">ご相談はこちら</h2>
+            <p>
+              スポンサー、タイアップ、公開収録、共同企画について、下のフォームからご連絡ください。内容を確認のうえ、担当者からご返信します。
+            </p>
+          </header>
+          <div class="form-frame">
+            <iframe
+              src={SITE.contactFormEmbedUrl}
+              title="日本AIジャーナル お問い合わせフォーム"
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+            >
+              <a href={SITE.contactFormUrl}>お問い合わせフォームを開く</a>
+            </iframe>
+          </div>
+          <p class="contact-fallback">
+            <a class="text-link" href={SITE.contactFormUrl} target="_blank" rel="noopener noreferrer">別のタブで開く</a>
+          </p>
+        </div>
       </div>
     </div>
   </section>
