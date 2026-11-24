@@ -1,7 +1,7 @@
 ---
 title: 【最強コスパAIはどれだ？】AIバトルロワイヤル 11モデルを徹底比較 超ドケチ利用術も全部教えます
 youtubeId: S5wUtMobzi0
-publishedAt: 2026-11-16
+publishedAt: "2026-11-12T00:00:00+09:00"
 category: AIモデル比較
 summary: ChatGPT、Claude、Gemini、DeepSeek、Grokなど主要11のAIモデルを「料金シミュレーター付きLP作成」という同一タスクで実証比較。最上位モデルと軽量モデルで約190倍のコスト差が判明。マルチホーミングの考え方と、品質を落とさず運用コストを抑える「超ドケチ利用術」7選を解説する。
 points:

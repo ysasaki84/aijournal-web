@@ -1,13 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../site.config';
-
-const usesEndpoint = Boolean(SITE.contactFormEndpoint);
-const topics = ['番組スポンサー', 'タイアップ・共同コンテンツ', '公開収録・イベント', '共創・その他'];
 ---
 
 <Base
-  title="スポンサー募集｜日本AIジャーナル ウェブ版"
+  title="スポンサー募集｜日本AIジャーナル"
   description="日本AIジャーナルのスポンサー・タイアップ・公開収録・共同企画のご相談窓口です。"
   ogImage="/still-session.jpg"
 >
@@ -77,94 +74,26 @@ const topics = ['番組スポンサー', 'タイアップ・共同コンテン�
   </section>
 
   <section class="page-section page-section-last" id="contact" aria-labelledby="contact-title">
-    <div class="container split">
-      <div>
-        <h2 class="split-title" id="contact-title">お問い合わせ</h2>
-        <p class="contact-aside">
-          メールで直接ご連絡いただくこともできます。<br />
-          <a class="text-link" href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>
+    <div class="container contact">
+      <div class="contact-intro">
+        <h2 class="section-title" id="contact-title">ご相談はこちら</h2>
+        <p>
+          スポンサー、タイアップ、公開収録、共同企画について、フォームからご連絡ください。内容を確認のうえ、担当者からご返信します。
+        </p>
+        <p>
+          <a class="text-link" href={SITE.contactFormUrl} target="_blank" rel="noopener noreferrer">別のタブで開く</a>
         </p>
       </div>
-
-      <form
-        class="contact-form"
-        id="contact-form"
-        method="post"
-        action={usesEndpoint ? SITE.contactFormEndpoint : undefined}
-        data-mailto={usesEndpoint ? undefined : SITE.contactEmail}
-      >
-        <div class="field-row">
-          <div class="field">
-            <label for="cf-company">会社名</label>
-            <input id="cf-company" name="company" autocomplete="organization" required />
-          </div>
-          <div class="field">
-            <label for="cf-name">お名前</label>
-            <input id="cf-name" name="name" autocomplete="name" required />
-          </div>
-        </div>
-        <div class="field">
-          <label for="cf-email">メールアドレス</label>
-          <input id="cf-email" name="email" type="email" autocomplete="email" required />
-        </div>
-        <fieldset class="field">
-          <legend>ご関心の内容</legend>
-          <div class="chips">
-            {
-              topics.map((t, i) => (
-                <label class="chip">
-                  <input type="radio" name="topic" value={t} checked={i === 0} />
-                  <span>{t}</span>
-                </label>
-              ))
-            }
-          </div>
-        </fieldset>
-        <div class="field">
-          <label for="cf-message">ご相談内容</label>
-          <textarea
-            id="cf-message"
-            name="message"
-            rows="6"
-            placeholder="時期、ご予算感、ご検討中の企画などがあればご記入ください。"></textarea>
-        </div>
-        <div class="form-actions">
-          <button class="btn btn-light" type="submit">{usesEndpoint ? '送信する' : 'メールを作成する'}</button>
-          <p class="form-note">
-            {
-              usesEndpoint
-                ? '内容を確認のうえ、担当者からご連絡します。'
-                : 'お使いのメールアプリが開き、入力内容が本文に入ります。そのまま送信してください。'
-            }
-          </p>
-        </div>
-        <p class="form-status" role="status" aria-live="polite"></p>
-      </form>
+      <div class="form-frame">
+        <iframe
+          src={SITE.contactFormEmbedUrl}
+          title="日本AIジャーナル お問い合わせフォーム"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        >
+          <a href={SITE.contactFormUrl}>お問い合わせフォームを開く</a>
+        </iframe>
+      </div>
     </div>
   </section>
 </Base>
-
-<script>
-  // 送信先サービス未設定のときは、入力内容入りのメールを作成する
-  const form = document.querySelector<HTMLFormElement>('#contact-form');
-  const to = form?.dataset.mailto;
-  if (form && to) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const data = new FormData(form);
-      const v = (k: string) => String(data.get(k) ?? '').trim();
-      const subject = `【スポンサー相談】${v('company')} ${v('name')}様`;
-      const body = [
-        `会社名：${v('company')}`,
-        `お名前：${v('name')}`,
-        `メールアドレス：${v('email')}`,
-        `ご関心の内容：${v('topic')}`,
-        '',
-        v('message'),
-      ].join('\n');
-      window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      const status = form.querySelector('.form-status');
-      if (status) status.textContent = `メールアプリを開きました。送信を完了してください。開かない場合は ${to} 宛てに直接お送りください。`;
-    });
-  }
-</script>

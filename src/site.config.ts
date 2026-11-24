@@ -1,15 +1,13 @@
-// サイト全体で使う設定値。公開前に「要差し替え」の項目を確認してください。
+// サイト全体で使う設定値。
 export const SITE = {
   name: '日本AIジャーナル',
-  title: '日本AIジャーナル ウェブ版',
+  title: '日本AIジャーナル',
   description:
-    'AI業界の経営者・研究者・開発当事者に深く聞く取材番組「日本AIジャーナル」のウェブ版。番組の対話を、導入判断に役立つ記事として公開しています。',
+    'AI業界の経営者・研究者・開発当事者に深く聞く取材番組「日本AIジャーナル」。番組の対話を、導入判断に役立つ記事として公開しています。',
   channelUrl: 'https://www.youtube.com/@nipponaijournal',
-  // Podcastの公開URL（未設定なら表示のみでリンクしません）
-  podcastUrl: '',
-  // 要差し替え：スポンサー・協業のお問い合わせ先
-  contactEmail: 'contact@example.com',
-  // フォーム送信サービス（Formspree、Google Apps Script など）を使う場合はURLを設定。
-  // 空のままなら、送信ボタンで入力内容入りのメールを作成する方式になります。
-  contactFormEndpoint: '',
+  podcastUrl: 'https://open.spotify.com/show/1mjiZI0WX3GA1YyH0uxUFb',
+  // スポンサー・協業の相談。埋め込みは Googleフォームの公開URL。
+  contactFormUrl: 'https://forms.gle/TpQheYFPRc3kasgB9',
+  contactFormEmbedUrl:
+    'https://docs.google.com/forms/d/e/1FAIpQLSfaD6kVVHtUKbMNRDbhnDYTDk80Xoyd2_PcZpCBezIYnxqurA/viewform?embedded=true&hl=ja',
 };

@@ -55,7 +55,6 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url).href;
         <a href="/" class="brand">
           <img src="/logo-mark.png" alt="" width="30" height="32" />
           <span class="brand-name">日本AIジャーナル</span>
-          <span class="brand-sub">ウェブ版</span>
         </a>
 
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -98,6 +97,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url).href;
           <li><a href="/about/">番組について</a></li>
           <li><a href="/partners/">スポンサー募集</a></li>
           <li><a href={SITE.channelUrl}>YouTubeチャンネル</a></li>
+          <li><a href={SITE.podcastUrl}>Podcast</a></li>
         </ul>
       </div>
       <div class="container footer-legal">

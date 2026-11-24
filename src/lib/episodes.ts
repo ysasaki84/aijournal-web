@@ -26,12 +26,26 @@ export function guestName(guest?: string): string | undefined {
   return guest ? guest.split(/[（(]/)[0].trim() : undefined;
 }
 
+/** 日本時間の暦日。YouTubeの公開日表示と揃える */
+function tokyoDate(date: Date): { y: string; m: string; d: string } {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Tokyo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? '';
+  return { y: get('year'), m: get('month'), d: get('day') };
+}
+
 export function formatDate(date: Date): string {
-  return date.toISOString().slice(0, 10).replace(/-/g, '.');
+  const { y, m, d } = tokyoDate(date);
+  return `${y}.${m}.${d}`;
 }
 
 export function isoDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
+  const { y, m, d } = tokyoDate(date);
+  return `${y}-${m}-${d}`;
 }
 
 /** YouTubeのサムネイル。maxres が無い動画は表示側で hqdefault に差し替える */

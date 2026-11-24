@@ -4,7 +4,7 @@ import { SITE } from '../site.config';
 ---
 
 <Base
-  title="番組について｜日本AIジャーナル ウェブ版"
+  title="番組について｜日本AIジャーナル"
   description="日本AIジャーナルは、AI業界の経営者・研究者・開発者・導入企業に深く聞く取材番組です。YouTubeとPodcastで毎週配信しています。"
   ogImage="/still-closeup.jpg"
 >
@@ -23,13 +23,13 @@ import { SITE } from '../site.config';
 
   <section class="page-section">
     <div class="container split">
-      <h2 class="split-title">番組とウェブ版</h2>
+      <h2 class="split-title">番組と記事</h2>
       <div class="prose">
         <p>
           ゲストは、AIを事業にしている経営者、研究者、開発の現場にいるエンジニア、そしてAIを導入した企業の担当者です。成功した話だけでなく、つまずいた理由や、乗り越えるまでの具体的な手順まで聞いていきます。
         </p>
         <p>
-          このウェブ版では、収録で得た対話を記事として編集しています。ニュースでは拾われない現場の一次情報を、比較表・検証データ・実践の手順まで残して記録し、AI導入を検討する方が判断材料として使いやすい形に整えています。
+          記事では、収録で得た対話を編集しています。ニュースでは拾われない現場の一次情報を、比較表・検証データ・実践の手順まで残して記録し、AI導入を検討する方が判断材料として使いやすい形に整えています。
         </p>
       </div>
     </div>
@@ -91,11 +91,11 @@ import { SITE } from '../site.config';
         <div>
           <dt>Podcast</dt>
           <dd>移動中や作業中に、対話をそのまま聞けます。</dd>
-          {SITE.podcastUrl && <dd><a class="text-link" href={SITE.podcastUrl}>Podcastを開く</a></dd>}
+          <dd><a class="text-link" href={SITE.podcastUrl}>Spotifyで聴く</a></dd>
         </div>
         <div>
-          <dt>ウェブ版</dt>
-          <dd>要点と全文を記事で。検索して読み返せるナレッジとして使えます。</dd>
+          <dt>記事</dt>
+          <dd>要点と全文を、検索して読み返せる形で残しています。</dd>
           <dd><a class="text-link" href="/#articles">記事一覧へ</a></dd>
         </div>
       </dl>
