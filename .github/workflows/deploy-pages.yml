@@ -1,8 +1,8 @@
-name: Deploy preview to GitHub Pages
+name: Deploy to GitHub Pages
 
-# 2バージョンを同一Pagesサイトに並べて公開する（main は変更しない）:
-#   - ダーク版(redesign)    → /aijournal-web/
-#   - ライト版(light-theme) → /aijournal-web/light/
+# GitHub Pages へ公開する（main は変更しない）:
+#   - ダーク版(redesign)    → https://ysasaki84.github.io/aijournal-web/
+#   - ライト版(light-theme) → https://ysasaki84.github.io/aijournal-web/light/
 # ソースは絶対パス(/...)前提のため、ビルド後に各プレフィックスを付与してサブパス配信に対応
 # させる（ソースコードは変更しない）。どちらのブランチへ push しても両方を最新で再ビルドする。
 on:
