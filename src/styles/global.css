@@ -423,9 +423,9 @@ figure {
 
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2.375rem, 5.6vw, 5.25rem);
+  font-size: clamp(1.9rem, 4.8vw, 3.85rem);
   font-weight: 600;
-  line-height: 1.24;
+  line-height: 1.28;
   letter-spacing: 0.04em;
   text-shadow: 0 2px 30px rgba(8, 11, 19, 0.45);
 }
@@ -438,6 +438,12 @@ figure {
 
 .hero-line > span {
   display: inline-block;
+  max-width: 100%;
+}
+
+.hero-phrase {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .hero-lede {
@@ -1763,7 +1769,7 @@ figure {
   }
 
   .hero-title {
-    font-size: min(8.4vw, 2.375rem);
+    font-size: clamp(1.72em, 7.4vw, 2.15rem);
   }
 
   .hero-actions .btn {
