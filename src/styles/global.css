@@ -1373,12 +1373,6 @@ figure {
   margin-top: 4px;
 }
 
-.form-note {
-  flex: 1 1 18em;
-  font-size: 13.5px;
-  color: var(--mute);
-}
-
 .form-status:empty {
   display: none;
 }
