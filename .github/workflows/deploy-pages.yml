@@ -28,6 +28,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: redesign
+      # 公開ゲート: 未解決の【要確認】を含む記事があれば公開を止める（koetsu 校閲で解決してから公開する）
+      - name: 公開ゲート（ダーク）
+        run: |
+          if grep -rl '【要確認' src/content/episodes; then
+            echo "::error::未解決の【要確認】を含む記事があります。/koetsu 校閲で解決してから公開してください。"
+            exit 1
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -45,6 +52,12 @@ jobs:
         with:
           ref: light-theme
           path: light-src
+      - name: 公開ゲート（ライト）
+        run: |
+          if grep -rl '【要確認' light-src/src/content/episodes; then
+            echo "::error::ライト版に未解決の【要確認】を含む記事があります。解決してから公開してください。"
+            exit 1
+          fi
       - name: Build light
         working-directory: light-src
         run: |
