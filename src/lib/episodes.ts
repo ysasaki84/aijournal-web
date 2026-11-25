@@ -21,7 +21,7 @@ export function readingMinutes(episode: Episode): number {
   return Math.max(1, Math.round(chars / 600));
 }
 
-/** 「佐藤すぐる氏（株式会社〇〇代表）」→「佐藤すぐる氏」 */
+/** 「佐藤傑氏（株式会社〇〇代表）」→「佐藤傑氏」 */
 export function guestName(guest?: string): string | undefined {
   return guest ? guest.split(/[（(]/)[0].trim() : undefined;
 }
