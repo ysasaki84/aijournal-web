@@ -2,7 +2,7 @@
 title: 【AIガチ勢のMuse解説】AIがお得に使えるのはいつまで？ Claude Fable最新モデルはビジネスで使える？
 youtubeId: H26iektYFWU
 publishedAt: "2026-11-20T00:00:00+09:00"
-guest: 佐藤傑氏（株式会社裏ベーション代表）
+guest: 佐藤傑氏（株式会社裏ベーション／Uravation 代表）
 category: AIモデル比較
 summary: Claudeの最上位モデル「Fable 5.2」と、メタの低単価モデル「Muse Ember」が相次いで登場。佐藤傑氏は、Fable 5.2は高性能だが高価で「多くの人はOpus 5.5で十分」とし、動画・3Dや重要意思決定など一部で真価を発揮すると解説。一方のMuse EmberはB2Cで急速に広がるが「B2Bではまだ使いにくい」と見る。あわせて、20ドルプランの持続性と「AIがお得に使えるのはいつまでか」を議論する。
 points:
