@@ -1,0 +1,36 @@
+---
+import type { Episode } from '../lib/episodes';
+import { readingMinutes, guestName, formatDate, isoDate, thumb } from '../lib/episodes';
+
+interface Props {
+  episode: Episode;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { episode, headingLevel = 'h3' } = Astro.props;
+const { title, youtubeId, publishedAt, guest, category, summary } = episode.data;
+const Heading = headingLevel;
+const name = guestName(guest);
+---
+
+<a class="card" href={`/episodes/${episode.id}/`}>
+  <div class="card-media">
+    <img
+      src={thumb(youtubeId)}
+      data-fallback={thumb(youtubeId, 'hqdefault')}
+      alt=""
+      width="1280"
+      height="720"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div class="meta">
+    {category && <span class="meta-cat">{category}</span>}
+    <time datetime={isoDate(publishedAt)}>{formatDate(publishedAt)}</time>
+    <span>{readingMinutes(episode)}分で読める</span>
+  </div>
+  <Heading class="card-title">{title}</Heading>
+  {name && <p class="card-guest">ゲスト　{name}</p>}
+  <p class="card-summary">{summary}</p>
+</a>

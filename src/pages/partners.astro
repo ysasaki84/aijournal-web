@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site.config';
+---
+
+<Base
+  title="スポンサー募集｜日本AIジャーナル"
+  description="日本AIジャーナルのスポンサー・タイアップ・公開収録・共同企画のご相談窓口です。"
+  ogImage="/still-session.jpg"
+>
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <p class="page-kicker">スポンサー募集</p>
+      <h1 class="page-title">AI導入を決める人に、<br />届く番組です。</h1>
+      <p class="page-lede">
+        日本AIジャーナルの視聴者・読者は、AIの導入を判断する経営層や部門責任者、現場で運用を担う担当者です。番組と一緒に、意思決定層との接点をつくりませんか。
+      </p>
+      <a class="btn btn-light" href="#contact">相談する</a>
+    </div>
+    <figure class="page-still">
+      <img src="/still-session.jpg" alt="ゲストを招いた番組の収録風景" width="1280" height="720" />
+    </figure>
+  </section>
+
+  <section class="page-section">
+    <div class="container">
+      <h2 class="section-title">ご一緒できること</h2>
+      <div class="offers">
+        <div class="offer">
+          <h3>意思決定層への直接リーチ</h3>
+          <p>大企業のAI導入・活用の意思決定層、中小企業の社長・役員層が、導入判断の材料として番組と記事を見ています。</p>
+        </div>
+        <div class="offer">
+          <h3>タイアップ・共同コンテンツ</h3>
+          <p>出演や共同企画を通じて、貴社の取り組みを報道の視点とあわせて伝えます。</p>
+        </div>
+        <div class="offer">
+          <h3>公開収録・イベント</h3>
+          <p>公開収録やイベントで、法人の意思決定者と直接対話する場を設計します。収録内容は記事・動画・音声で再利用できます。</p>
+        </div>
+        <div class="offer">
+          <h3>共創・新しい連携</h3>
+          <p>広告や研修の枠を超えて、共同実証やコンソーシアムなど、まだ形になっていない連携を一緒に設計します。</p>
+        </div>
+      </div>
+      <p class="note">
+        編集の独立性について：スポンサー企画は通常の取材記事と区別して明示し、編集方針は番組側で管理します。
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container split">
+      <h2 class="split-title">ご相談の流れ</h2>
+      <ol class="steps">
+        <li>
+          <h3>お問い合わせ</h3>
+          <p>下のフォームから、ご関心の内容をお送りください。</p>
+        </li>
+        <li>
+          <h3>ヒアリング</h3>
+          <p>目的・時期・ご予算感をオンラインで伺います。</p>
+        </li>
+        <li>
+          <h3>企画のご提案</h3>
+          <p>出演、記事、公開収録などの組み合わせをご提案します。</p>
+        </li>
+        <li>
+          <h3>収録・公開</h3>
+          <p>収録後、動画・音声・記事として公開します。</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="page-section page-section-last" id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <div class="contact-shell">
+        <div class="contact-layout">
+          <header class="contact-intro">
+            <p class="page-kicker">お問い合わせ</p>
+            <h2 class="section-title" id="contact-title">ご相談はこちら</h2>
+            <p>
+              スポンサー、タイアップ、公開収録、共同企画について、下のフォームからご連絡ください。内容を確認のうえ、担当者からご返信します。
+            </p>
+          </header>
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="field">
+              <label for="cf-company">会社名・団体名</label>
+              <input id="cf-company" name="company" autocomplete="organization" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="cf-name">お名前<span class="req">必須</span></label>
+                <input id="cf-name" name="name" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="cf-email">メールアドレス<span class="req">必須</span></label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" required />
+              </div>
+            </div>
+            <div class="field">
+              <label for="cf-message">お問い合わせ内容<span class="req">必須</span></label>
+              <textarea id="cf-message" name="message" rows="6" required></textarea>
+            </div>
+            <div class="field">
+              <label for="cf-url">関連URL</label>
+              <input id="cf-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="https://" />
+            </div>
+            <label class="consent">
+              <input type="checkbox" name="consent" required />
+              <span>
+                ご入力いただいた個人情報は、<a href={SITE.contactPrivacyUrl} target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>に基づき、お問い合わせへの回答・ご連絡および付随する業務のために利用します。以上の内容に同意する。
+              </span>
+            </label>
+            <div class="form-actions">
+              <button class="btn btn-light" type="submit">送信する</button>
+            </div>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+          <p class="contact-done" id="contact-done" hidden>
+            お問い合わせありがとうございます。内容を確認のうえ、担当者よりご連絡いたします。
+          </p>
+          <p class="contact-fallback">
+            画面が変わらないときは、通信を制限する拡張機能をオフにするか、<a class="text-link" href={SITE.contactFormUrl} target="_blank" rel="noopener noreferrer">フォームを別のタブで開いて</a>お送りください。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ endpoint: SITE.contactFormResponseUrl, fields: SITE.contactFields, consentValue: SITE.contactConsentValue }}>
+  const form = document.querySelector('#contact-form');
+  const done = document.querySelector('#contact-done');
+  const status = form?.querySelector('.form-status');
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const button = form.querySelector('button');
+    if (button) button.disabled = true;
+    const data = new FormData(form);
+    const value = (key) => String(data.get(key) ?? '').trim();
+    const body = new URLSearchParams();
+    const put = (entry, text) => {
+      if (text) body.set(entry, text);
+    };
+    put(fields.company, value('company'));
+    body.set(fields.name, value('name'));
+    body.set(fields.email, value('email'));
+    body.set(fields.message, value('message'));
+    put(fields.url, value('url'));
+    body.set(fields.consent, consentValue);
+    body.set('fvv', '1');
+    try {
+      await fetch(endpoint, { method: 'POST', mode: 'no-cors', body });
+      form.hidden = true;
+      if (done) done.hidden = false;
+    } catch {
+      if (button) button.disabled = false;
+      if (status) status.textContent = '送信できませんでした。下のリンクから別のタブでお送りください。';
+    }
+  });
+</script>

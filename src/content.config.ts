@@ -11,6 +11,8 @@ const episodes = defineCollection({
     category: z.string().optional(),
     summary: z.string(),
     points: z.array(z.string()).default([]),
+    // trueにするとトップの大きな枠に表示（未指定なら最新の記事）
+    featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
 });

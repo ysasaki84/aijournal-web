@@ -1,248 +1,237 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import EpisodeCard from '../components/EpisodeCard.astro';
+import { SITE } from '../site.config';
+import {
+  getEpisodes,
+  pickFeatured,
+  readingMinutes,
+  guestName,
+  formatDate,
+  isoDate,
+  thumb,
+} from '../lib/episodes';
 
-const episodes = await getCollection('episodes', ({ data }) => !data.draft || import.meta.env.DEV);
-episodes.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
-
-const featured = episodes[0];
-const categories = [...new Set(episodes.map((e) => e.data.category).filter(Boolean))];
-const channelUrl = 'https://www.youtube.com/@nipponaijournal';
+const episodes = await getEpisodes();
+const featured = pickFeatured(episodes);
+const rest = episodes.filter((e) => e !== featured);
+const latest = episodes[0];
+const categories = [...new Set(episodes.map((e) => e.data.category).filter(Boolean))] as string[];
 ---
 
-<Base>
-  {/* ---------- ヒーロー ---------- */}
-  <section class="hero hero-glow">
-    <div class="container">
-      <span class="pill hero-eyebrow">企業のAI導入・活用の判断に役立つ、取材メディア</span>
-      <h1>AIを導入する前に、<br />現場の実話を聞こう。</h1>
-      <p class="lede">
-        「日本AIジャーナル」は、AI業界の経営者・研究者・開発当事者に深く聞く取材番組です。このサイトでは番組の対話を記事化し、モデル比較のコスト検証から企業導入の失敗と克服まで——<strong>導入判断と活用に役立つ一次情報</strong>だけを無料で公開しています。
+<Base overlayHeader>
+  {/* ファーストビュー：番組映像 */}
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-media" aria-hidden="true">
+      <video
+        class="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster="/hero-poster.jpg"
+        data-poster-mobile="/hero-mobile-poster.jpg"
+      >
+        {/* モバイル（縦画面）は専用の縦動画。横動画の左右見切れを防ぐ */}
+        <source src="/hero-mobile.mp4" type="video/mp4" media="(max-width: 640px)" />
+        <source src="/hero-loop.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-grade"></div>
+    </div>
+
+    <div class="container hero-body">
+      <p class="hero-kicker">AI業界の当事者に聞く、取材番組</p>
+      <h1 class="hero-title" id="hero-title">
+        <span class="hero-line"><span><span class="hero-phrase">AIを入れる前も、</span><span class="hero-phrase">つまずいたあとも。</span></span></span>
+        <span class="hero-line"><span class="hero-phrase">現場の実話を聞こう。</span></span>
+      </h1>
+      <p class="hero-lede">
+        経営者・研究者・開発の当事者に深く聞く「日本AIジャーナル」。番組の対話を、導入判断に使える記事にして公開しています。
       </p>
       <div class="hero-actions">
-        <a href="#latest" class="btn-primary">記事を読み始める</a>
-        <a href={`${channelUrl}?sub_confirmation=1`} class="btn-ghost">YouTube本編を見る</a>
-      </div>
-      <div class="stats-row">
-        <div class="stat"><span class="stat-num">{episodes.length}</span><span class="stat-label">公開記事</span></div>
-        <div class="stat"><span class="stat-num">{categories.length}</span><span class="stat-label">テーマ領域</span></div>
-        <div class="stat"><span class="stat-num">2媒体</span><span class="stat-label">YouTube / Podcast</span></div>
+        <a href="#articles" class="btn btn-light">記事を読む</a>
+        <a href={`${SITE.channelUrl}?sub_confirmation=1`} class="btn btn-line">YouTubeで番組を見る</a>
       </div>
     </div>
-  </section>
 
-  {/* ---------- 01 About: 日本AIジャーナルとは ---------- */}
-  <section class="section section-plate">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-eyebrow">01 — About</span>
-        <h2 class="section-title-lg">日本AIジャーナルとは</h2>
-      </div>
-      <div class="about-grid">
-        <div class="about-main">
-          <p>
-            日本経済新聞社の取材力・信頼を背景に、MC北爪がAI業界の<strong>当事者</strong>——経営者、研究者、開発者、導入企業——を招き、技術とビジネスの実態を掘り下げる取材番組です。YouTubeとPodcastで毎週配信しています。
-          </p>
-          <p>
-            このウェブ版では、収録で得た対話を記事として編集・公開。ニュースでは拾われない<strong>現場の一次情報</strong>を、比較表・検証データ・実践手順まで残して記録し、AI導入を検討する方の判断材料として使いやすく整えています。
-          </p>
-        </div>
-        <div class="about-cards">
-          <div class="concept-card">
-            <span class="concept-num">取材</span>
-            <p>報道現場の問いと事実確認。当事者しか語れない一次情報を、厳しい目で引き出す。</p>
-          </div>
-          <div class="concept-card">
-            <span class="concept-num">発信</span>
-            <p>YouTube / Podcastで幅広い層へ。AIに関わるすべての人に、深い議論を届ける。</p>
-          </div>
-          <div class="concept-card">
-            <span class="concept-num">共創</span>
-            <p>尖った実践者との対話から、まだ形になっていない次のAI事業を一緒に考える。</p>
-          </div>
-        </div>
-      </div>
-
-      {/* 対象者 */}
-      <div class="audience-block">
-        <h3 class="audience-heading">こんな方に読まれています</h3>
-        <div class="audience-grid">
-          <div class="audience-card">
-            <p class="audience-title">大企業のAI導入・活用の意思決定層</p>
-            <p class="audience-body">全社導入を判断する経営層・部門責任者。導入から業務成果・生産性向上までの実態を知りたい方。</p>
-          </div>
-          <div class="audience-card">
-            <p class="audience-title">中小企業の社長・役員層</p>
-            <p class="audience-body">限られたリソースでAIを業務に活かしたい経営者。コストと成果の両立する実例を探している方。</p>
-          </div>
-          <div class="audience-card">
-            <p class="audience-title">DX・業務改革・開発の担当者</p>
-            <p class="audience-body">ツール選定やエージェント運用の実務を担う現場リーダー・エンジニア。手順や検証データをそのまま使いたい方。</p>
-          </div>
-          <div class="audience-card">
-            <p class="audience-title">AIの動向を追うすべての人</p>
-            <p class="audience-body">AI・技術・働き方の変化に関心のある一般の方。感情論ではなく当事者の生の声を聞きたい方。</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* ---------- 今週のピックアップ ---------- */}
-  {featured && (
-    <section class="container" style="padding: 80px 0;">
-      <div class="section-head">
-        <span class="section-eyebrow">Featured</span>
-      </div>
-      <a
-        href={`/episodes/${featured.id}/`}
-        class="featured"
-        style={`background-image:url(https://i.ytimg.com/vi/${featured.data.youtubeId}/hqdefault.jpg)`}
-      >
-        <div class="featured-overlay">
-          <span class="featured-label">注目の記事</span>
-          <h3 class="featured-title">{featured.data.title}</h3>
-          <p class="featured-meta">{featured.data.summary}</p>
-          <span class="btn-ghost">記事を読む</span>
-        </div>
-      </a>
-    </section>
-  )}
-
-  {/* ---------- 02 読者に届ける価値 ---------- */}
-  <section class="container features">
-    <div class="section-head">
-      <span class="section-eyebrow">02 — Value</span>
-      <h2 class="section-title">このメディアがお届けすること</h2>
-    </div>
-    <div class="features-grid">
-      <div class="feature-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2V5z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-        <div>
-          <p class="feature-title">判断に使える比較と検証データ</p>
-          <p class="feature-body">モデル別のコスト比較、同一タスクでの生成実験など、採用・予算判断に直結するデータを表として残します。</p>
-        </div>
-      </div>
-      <div class="feature-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.1-2.6 5.6-.8.9-1.4 2-1.4 3.4h-6c0-1.4-.6-2.5-1.4-3.4C6.2 13.1 5 11.4 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/></svg>
-        <div>
-          <p class="feature-title">導入の前に知れる現場の実例</p>
-          <p class="feature-body">成功事例だけでなく、「導入4つの罠」のような失敗の構造や、組織改革の具体的な手順まで当事者の口から語られます。</p>
-        </div>
-      </div>
-      <div class="feature-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
-        <div>
-          <p class="feature-title">検索して戻れるナレッジベース</p>
-          <p class="feature-body">要点と全文の記録を残すので、社内共有や資料づくりにそのまま引用できます。読み終えた記事は辞書のように使えます。</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* ---------- 03 Archive ---------- */}
-  <section id="latest" class="container" style="padding-bottom: 80px;">
-    <div class="section-head">
-      <span class="section-eyebrow">03 — Archive</span>
-      <h2 class="section-title">All Episodes</h2>
-    </div>
-    <div class="pill-row">
-      <a href="#" class="filter-pill active" data-filter="all">すべて</a>
-      {categories.map((c) => (
-        <a href="#" class="filter-pill" data-filter={c}>{c}</a>
-      ))}
-    </div>
-    <ul class="episode-grid">
-      {episodes.map((episode) => (
-        <li data-category={episode.data.category}>
-          <a href={`/episodes/${episode.id}/`} class="episode-card">
-            <img
-              src={`https://i.ytimg.com/vi/${episode.data.youtubeId}/hqdefault.jpg`}
-              alt=""
-              loading="lazy"
-            />
-            <p class="title">{episode.data.title}</p>
-            <p class="meta">
-              {episode.data.publishedAt.toISOString().slice(0, 10)}｜{episode.data.category}
-            </p>
+    <div class="container hero-foot">
+      {
+        latest && (
+          <a class="hero-latest" href={`/episodes/${latest.id}/`}>
+            <span class="live-dot" aria-hidden="true" />
+            <span class="hero-latest-label">最新回</span>
+            <span class="hero-latest-title">{latest.data.title}</span>
           </a>
-        </li>
-      ))}
-    </ul>
+        )
+      }
+      <button class="hero-toggle" type="button" aria-pressed="false" aria-label="背景の映像を一時停止">
+        <svg class="icon-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 3h2v10h-2zM9.5 3h2v10h-2z" /></svg>
+        <svg class="icon-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l8 5-8 5z" /></svg>
+      </button>
+    </div>
   </section>
 
-  {/* ---------- 04 参画パートナー向け ---------- */}
-  <section class="section section-plate">
+  {/* 記事一覧 */}
+  <section class="articles" id="articles" aria-labelledby="articles-title">
     <div class="container">
-      <div class="section-head">
-        <span class="section-eyebrow">04 — Partners</span>
-        <h2 class="section-title-lg">日本AIジャーナルと<br />取り組みたい企業へ</h2>
-      </div>
-      <div class="partner-grid">
-        <div class="partner-card">
-          <span class="partner-num">01</span>
-          <p class="partner-title">意思決定層への直接リーチ</p>
-          <p class="partner-body">大企業のAI導入・活用の意思決定層、中小企業の社長・役員層が、導入判断の材料として本メディアを読みます。</p>
+      <header class="articles-head">
+        <div>
+          <h2 class="section-title" id="articles-title">記事</h2>
+          <p class="section-note">番組の対話を、要点と全文で読める記事にしています。</p>
         </div>
-        <div class="partner-card">
-          <span class="partner-num">02</span>
-          <p class="partner-title">タイアップ・共同コンテンツ</p>
-          <p class="partner-body">出演や共同企画を通じて、貴社の取り組みを「報道の信頼性」とセットで伝えられます。編集独立性は別途、明示のうえ管理します。</p>
-        </div>
-        <div class="partner-card">
-          <span class="partner-num">03</span>
-          <p class="partner-title">公開収録・イベント接点</p>
-          <p class="partner-body">公開収録やイベントを通じて、法人の意思決定者と対話する場を設計できます。コンテンツは記事・動画・音声で再利用されます。</p>
-        </div>
-        <div class="partner-card">
-          <span class="partner-num">04</span>
-          <p class="partner-title">共創・新しい連携の設計</p>
-          <p class="partner-body">広告や研修の枠を超えて、共同実証やコンソーシアムなど、まだ形になっていない連携を一緒に設計することを目的のひとつにしています。</p>
-        </div>
-      </div>
-      <div class="partner-cta">
-        <p class="partner-cta-text">参画のご相談・タイアップのお問い合わせは、メディア担当まで。</p>
-        <a href="mailto:contact@example.com" class="btn-ghost">参画のご相談はこちら</a>
+        {
+          categories.length > 1 && (
+            <div class="filter" role="group" aria-label="テーマで絞り込む">
+              <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">
+                すべて
+              </button>
+              {categories.map((c) => (
+                <button type="button" class="filter-btn" data-filter={c} aria-pressed="false">
+                  {c}
+                </button>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      {
+        featured && (
+          <article class="feature" data-category={featured.data.category}>
+            <a class="feature-media" href={`/episodes/${featured.id}/`} tabindex="-1" aria-hidden="true">
+              <img
+                src={thumb(featured.data.youtubeId)}
+                data-fallback={thumb(featured.data.youtubeId, 'hqdefault')}
+                alt=""
+                width="1280"
+                height="720"
+                decoding="async"
+              />
+            </a>
+            <div class="feature-body">
+              <div class="meta">
+                {featured.data.category && <span class="meta-cat">{featured.data.category}</span>}
+                <time datetime={isoDate(featured.data.publishedAt)}>{formatDate(featured.data.publishedAt)}</time>
+                <span>{readingMinutes(featured)}分で読める</span>
+              </div>
+              <h3 class="feature-title">
+                <a href={`/episodes/${featured.id}/`}>{featured.data.title}</a>
+              </h3>
+              {featured.data.guest && <p class="feature-guest">ゲスト　{guestName(featured.data.guest)}</p>}
+              {featured.data.points.length > 0 ? (
+                <div class="feature-points">
+                  <p class="feature-points-head">この回でわかること</p>
+                  <ul>
+                    {featured.data.points.slice(0, 3).map((p) => (
+                      <li>{p}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p class="feature-summary">{featured.data.summary}</p>
+              )}
+              <a class="btn btn-light" href={`/episodes/${featured.id}/`}>
+                記事を読む
+              </a>
+            </div>
+          </article>
+        )
+      }
+
+      {
+        rest.length > 0 && (
+          <ul class="card-grid">
+            {rest.map((episode) => (
+              <li data-category={episode.data.category}>
+                <EpisodeCard episode={episode} />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      {episodes.length === 0 && <p class="empty">最初の記事を準備しています。番組はYouTubeで公開中です。</p>}
+    </div>
+  </section>
+
+  {/* 番組について（要約） */}
+  <section class="home-about" aria-labelledby="home-about-title">
+    <div class="container home-about-inner">
+      <h2 class="statement" id="home-about-title">当事者に、<br />深く聞く。</h2>
+      <div class="home-about-text">
+        <p>
+          日本AIジャーナルは、日本経済新聞社の北爪がMCを務め、AI業界の経営者・研究者・開発者・導入企業を招いて話を聞く番組です。<a class="text-link" href={SITE.channelUrl}>YouTube</a>と<a class="text-link" href={SITE.podcastUrl}>Podcast</a>で毎週配信しています。
+        </p>
+        <p>
+          ニュースでは拾われない現場の一次情報を、比較表や検証データ、実践の手順まで残して記事にしています。
+        </p>
+        <a class="text-link" href="/about/">番組について詳しく</a>
       </div>
     </div>
   </section>
 
-  {/* ---------- 登録導線パネル ---------- */}
-  <section class="container" style="padding: 80px 0;">
-    <div class="cta-panel">
-      <h2 class="cta-title">毎週、当事者の話を配信中</h2>
-      <p class="cta-body">
-        新しい検証・対話はYouTube本編で公開。通知をオンにすると、記事化のタイミングも取りこぼしません。
-      </p>
-      <a href={`${channelUrl}?sub_confirmation=1`} class="btn-primary">チャンネル登録して通知を受け取る</a>
+  {/* スポンサー向け */}
+  <section class="home-partner" aria-labelledby="home-partner-title">
+    <div class="container">
+      <div class="partner-band">
+        <div>
+          <h2 class="partner-band-title" id="home-partner-title">番組と一緒に、企画をつくりませんか。</h2>
+          <p>
+            AI導入を判断する経営層・責任者に向けて、タイアップや公開収録、共同企画を設計できます。スポンサー・協業のご相談を受け付けています。
+          </p>
+        </div>
+        <a class="btn btn-light" href="/partners/">スポンサーについて見る</a>
+      </div>
     </div>
   </section>
-
-  {/* ---------- 固定コンバージョンバー ---------- */}
-  <div class="promo-bar">
-    <div class="container promo-inner">
-      <img src="/logo-mark.png" alt="" class="promo-avatar" />
-      <div class="promo-text">
-        <p class="promo-title">日本AIジャーナル — 企業のAI導入判断に役立つ一次情報を、毎週配信</p>
-        <p class="promo-sub">記事は本編公開後に追加されます</p>
-      </div>
-      <a href={`${channelUrl}?sub_confirmation=1`} class="btn-primary">チャンネル登録</a>
-    </div>
-  </div>
 </Base>
 
 <script>
-  const pills = document.querySelectorAll<HTMLAnchorElement>('.filter-pill');
-  const cards = document.querySelectorAll<HTMLElement>('[data-category]');
-  pills.forEach((pill) => {
-    pill.addEventListener('click', (e) => {
-      e.preventDefault();
-      pills.forEach((p) => p.classList.remove('active'));
-      pill.classList.add('active');
-      const v = pill.dataset.filter;
-      cards.forEach((card) => {
-        card.style.display = v === 'all' || card.dataset.category === v ? '' : 'none';
+  // 背景映像の再生／一時停止（視覚的な動きを減らす設定の場合は最初から停止）
+  const video = document.querySelector<HTMLVideoElement>('.hero-video');
+  const toggle = document.querySelector<HTMLButtonElement>('.hero-toggle');
+
+  // モバイル（縦画面）では縦動画・縦ポスターを確実に使う。
+  // <source media> を解釈しないブラウザでも正しい動画に差し替える保険。
+  if (video) {
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    const mobilePoster = video.dataset.posterMobile;
+    if (isMobile) {
+      if (mobilePoster) video.poster = mobilePoster;
+      const sources = Array.from(video.querySelectorAll<HTMLSourceElement>('source'));
+      const mobileSrc = sources.find((s) => s.hasAttribute('media'))?.getAttribute('src');
+      if (mobileSrc) {
+        const current = (video.currentSrc || '').split('/').pop();
+        if (current !== mobileSrc.split('/').pop()) {
+          video.src = mobileSrc;
+          video.load();
+          video.play().catch(() => {});
+        }
+      }
+    }
+  }
+  if (video && toggle) {
+    const setPaused = (paused: boolean) => {
+      if (paused) video.pause();
+      else video.play().catch(() => {});
+      toggle.setAttribute('aria-pressed', String(paused));
+      toggle.setAttribute('aria-label', paused ? '背景の映像を再生' : '背景の映像を一時停止');
+    };
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPaused(true);
+    toggle.addEventListener('click', () => setPaused(!video.paused));
+  }
+
+  // テーマで絞り込み
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const items = document.querySelectorAll<HTMLElement>('.articles [data-category]');
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.filter;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      items.forEach((item) => {
+        item.hidden = !(value === 'all' || item.dataset.category === value);
       });
-    });
-  });
+    }),
+  );
 </script>
