@@ -60,7 +60,10 @@ kirinuki スキルの `scripts/lib_captions.py` の `TERM_MAP` と同一方針�
 > 記事は「実験当時に言われた名前」に忠実であればよく、ここは **非実在名を見抜くための物差し** として使う。
 
 ### Anthropic / Claude 現行ラインナップ
-- ファミリ：**Opus**（最上位）/ **Sonnet**（中位）/ **Haiku**（軽量）/ **Fable**
+- ファミリ：**Opus**（最上位）/ **Sonnet**（中位）/ **Haiku**（軽量）/ **Fable**（最上位ティア）/ **Mythos**（審査制・セキュリティ/生命科学向け）
+- **確認済み（Anthropic公式・2026-11-09）**：`Fable 5.2`（一般公開）と `Mythos 5.2`（申請制）を同時公開。公式が `Opus 5.5` にも言及。
+  → 一次情報で繰り返し登場していた `5.x 系`（`Opus 5.5` / `Fable 5.2` 等）は**実在が確定**。当初 seed した `Opus 4.8 / Fable 5` は陳腐化済み。
+  出典: <https://www.anthropic.com/claude-fable-and-mythos-5-2>
 - 旧世代の疑いが濃い例 → `Claude 3.5 Opus`、`Claude 3.5 Sonnet/Haiku`（3.5系は旧世代。記事化AIが旧知識で付けがち）
 - 記事で使う粒度：**バージョンが確証できないときは `Opus`/`Sonnet`/`Haiku`/`Fable` のファミリ名だけ**にする
   （例：「最上位モデル」）。版番号は逐語録＋この表で一致したときだけ付ける。
@@ -81,8 +84,9 @@ kirinuki スキルの `scripts/lib_captions.py` の `TERM_MAP` と同一方針�
 > 入力8/出力40ドル、前は10/50ドル、オパスより上位ティア）と **Opus 5.5**・**Sonnet 5.5** を明言。
 > これで `Opus 5.5 / Sonnet 5.5 / Fable 5.x` 系の版番号は**3回の独立した一次情報**（battle-royale / traps-part2 /
 > 本回）で一貫して登場しており、seed値（Opus 4.8 / Fable 5 等）より新しい可能性が高い。**人間が実在を確定し、
-> この表のas-ofを更新すること**。また本回で新出の呼称：`Mithos 5.2`（申請制・セキュリティ系Claude）、
-> メタ `Muse Wonder`（上位）/`Muse Ember`（軽量）。綴り未確定のため記事では「動画内での呼称」と帰属。
+> この表のas-ofを更新すること**（→ 上記「確認済み」で Fable 5.2 / Mythos 5.2 / Opus 5.5 は公式確定）。
+> また本回で新出の呼称：**`Claude Mythos 5.2`**（Anthropic公式で確認済み＝綴りは **Mythos**、Mithosは誤り。Fableと同基盤の
+> 審査制セキュリティ/生命科学版、2026-11-09公開）、Meta の `Muse Wonder`（上位）/`Muse Ember`（軽量。※Metaの新モデル名は未確認）。
 
 ### 他社（主要のみ。網羅はしない）
 - OpenAI = **ChatGPT / GPT 系**、Google = **Gemini**、xAI = **Grok**、**DeepSeek**、**Mistral**、**GLM**（智譜/Zhipu）
